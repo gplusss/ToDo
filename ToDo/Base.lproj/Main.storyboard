@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Root View Controller-->
@@ -40,10 +41,60 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="BMl-Ui-z9x"/>
+                    <connections>
+                        <segue destination="tl9-EJ-Whx" kind="presentation" identifier="showDetail" id="TE7-T4-SUr"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y7F-vS-Dmm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-115" y="192"/>
+        </scene>
+        <!--Second View Controller-->
+        <scene sceneID="JLX-ca-rol">
+            <objects>
+                <viewController id="tl9-EJ-Whx" customClass="SecondViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1NV-aU-NCq"/>
+                        <viewControllerLayoutGuide type="bottom" id="pBT-UZ-8BU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="isc-23-dR4">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oWM-vP-ObY" userLabel="Text Field">
+                                <rect key="frame" x="27" y="45" width="440" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ocY-Ht-VZ8">
+                                <rect key="frame" x="512" y="45" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="1hf-rx-ef0"/>
+                                    <constraint firstAttribute="height" constant="30" id="ZuI-h6-Fer"/>
+                                </constraints>
+                                <state key="normal" title="ADD"/>
+                                <connections>
+                                    <action selector="addButtonClicked:" destination="tl9-EJ-Whx" eventType="touchUpInside" id="Cld-Ok-m0J"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ocY-Ht-VZ8" secondAttribute="trailing" constant="42" id="Da0-k7-dEd"/>
+                            <constraint firstItem="ocY-Ht-VZ8" firstAttribute="leading" secondItem="oWM-vP-ObY" secondAttribute="trailing" constant="45" id="Gc6-bL-8Cz"/>
+                            <constraint firstItem="oWM-vP-ObY" firstAttribute="top" secondItem="1NV-aU-NCq" secondAttribute="bottom" constant="25" id="VXr-B6-B0n"/>
+                            <constraint firstItem="oWM-vP-ObY" firstAttribute="leading" secondItem="isc-23-dR4" secondAttribute="leadingMargin" constant="7" id="btH-iS-uOn"/>
+                            <constraint firstItem="ocY-Ht-VZ8" firstAttribute="centerY" secondItem="oWM-vP-ObY" secondAttribute="centerY" id="mvr-Dy-FeT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="addButton" destination="ocY-Ht-VZ8" id="MsN-Js-a1v"/>
+                        <outlet property="textField" destination="oWM-vP-ObY" id="ffw-5v-ydY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BUc-xr-jeD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="582" y="192"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hnb-cs-PKe">

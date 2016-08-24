@@ -11,15 +11,32 @@ import UIKit
 class ViewController: UITableViewController {
 
     
-    let toDoList = [Data]()
-    
+    var toDoList = [Data]()
+    var destVC: SecondViewController? = SecondViewController()
 
     func addTapped() {
+        performSegueWithIdentifier("showDetail", sender: self)
         
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        destVC = segue.destinationViewController  as? SecondViewController
+        
+        destVC?.itemsArray = toDoList
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        toDoList = (destVC?.itemsArray)!
+        tableView.reloadData()
+        destVC = nil
     }
     
     override func viewDidLoad() {
         title = "ToDo LIST"
+        
+        //toDoList.append(Data(title: "5tf5f5tf5tf"))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .Plain, target: self, action: #selector(addTapped))
        
@@ -49,6 +66,12 @@ class ViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            toDoList.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        }
+    }
     
     
 
