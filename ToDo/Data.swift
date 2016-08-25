@@ -7,7 +7,14 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Data {
-    var title: String
+class Data: Object {
+    dynamic var title: String = ""
+    
+     convenience init(title: String) {
+        self.init()
+        self.title = title
+    }
+    
 }

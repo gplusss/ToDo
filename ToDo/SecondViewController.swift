@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import RealmSwift
 
-class SecondViewController: UIViewController {
+
+protocol SecondViewControllerDelegate: class {
+    func didSaveTodo(todo: Data)
+}
+
+class SecondViewController: UIViewController, UITextFieldDelegate {
     
-    var toPass: String!
-    var itemsArray = [Data]()
+    var todo: Data?
+    weak var delegate: SecondViewControllerDelegate?
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var addButton: UIButton!
@@ -38,17 +44,20 @@ class SecondViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        textField.text = todo?.title
         textField.inputAccessoryView = accessoryToolbar
         
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
     }
 
 
     @IBAction func addButtonClicked(sender: AnyObject) {
         NSLog("clicked")
         
-        toPass = textField.text
-        itemsArray.append(Data(title: "\(toPass)"))
-
+        delegate?.didSaveTodo(Data(title: textField.text ?? ""))
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

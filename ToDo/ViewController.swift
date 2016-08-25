@@ -7,38 +7,37 @@
 //
 
 import UIKit
+import RealmSwift
+
 
 class ViewController: UITableViewController {
 
-    
     var toDoList = [Data]()
     var destVC: SecondViewController? = SecondViewController()
-
+    
     func addTapped() {
-        performSegueWithIdentifier("showDetail", sender: self)
-        
+        performSegueWithIdentifier("showDetail", sender: nil)
         
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        destVC = segue.destinationViewController  as? SecondViewController
+        guard let secondViewController = segue.destinationViewController as? SecondViewController else { return }
+        secondViewController.delegate = self
         
-        destVC?.itemsArray = toDoList
+        if let todo = sender as? Data { //edit
+            secondViewController.todo = todo
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        toDoList = (destVC?.itemsArray)!
+        
         tableView.reloadData()
-        destVC = nil
     }
     
     override func viewDidLoad() {
         title = "ToDo LIST"
-        
-        //toDoList.append(Data(title: "5tf5f5tf5tf"))
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .Plain, target: self, action: #selector(addTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "ADD", style: .Plain, target: self, action: #selector(addTapped))
        
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -61,9 +60,13 @@ class ViewController: UITableViewController {
         
         cell.toDoTextLabel.text = toDo.title
         
-        
-        
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let todo = toDoList[indexPath.row]
+        performSegueWithIdentifier("showDetail", sender: todo)
+
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -72,9 +75,11 @@ class ViewController: UITableViewController {
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
-    
-    
+}
 
-
+extension ViewController: SecondViewControllerDelegate {
+    func didSaveTodo(todo: Data) {
+        toDoList.append(todo)
+    }
 }
 

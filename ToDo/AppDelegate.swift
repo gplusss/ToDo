@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        let realm = try! Realm()
+        
+        if realm.objects(Data).count == 0 {
+            realm.beginWrite()
+            
+            realm.add(Data(title: "123"))
+            
+            try! realm.commitWrite()
+        }
+        
         return true
     }
 
