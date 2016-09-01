@@ -45,6 +45,10 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if todo?.title != nil {
+            addButton.setTitle("EDIT", forState: .Normal)
+            
+        }
         textField.text = todo?.title
         textField.inputAccessoryView = accessoryToolbar
         
@@ -57,7 +61,16 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
     @IBAction func addButtonClicked(sender: AnyObject) {
         NSLog("clicked")
         
-        delegate?.didSaveTodo(Data(title: textField.text ?? ""))
+        let title = textField.text ?? ""
+        
+        if todo?.title == nil {
+            todo = Data(title: title)
+        } else {
+            todo?.title = title
+        }
+        
+        delegate?.didSaveTodo(todo!)
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

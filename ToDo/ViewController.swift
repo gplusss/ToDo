@@ -12,7 +12,7 @@ import RealmSwift
 
 class ViewController: UITableViewController {
 
-    var toDoList = [Data]()
+    var toDoList = Set<Data>()
     var destVC: SecondViewController? = SecondViewController()
     
     func addTapped() {
@@ -36,16 +36,14 @@ class ViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
-        title = "ToDo LIST"
+        title = "TODO LIST"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "ADD", style: .Plain, target: self, action: #selector(addTapped))
        
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
@@ -56,7 +54,7 @@ class ViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! ToDoCell
         
-        let toDo = toDoList[indexPath.row]
+        let toDo = toDoList[toDoList.startIndex.advancedBy(indexPath.row)]
         
         cell.toDoTextLabel.text = toDo.title
         
@@ -64,14 +62,14 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let todo = toDoList[indexPath.row]
+        let todo = toDoList[toDoList.startIndex.advancedBy(indexPath.row)]
         performSegueWithIdentifier("showDetail", sender: todo)
 
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            toDoList.removeAtIndex(indexPath.row)
+            toDoList.removeAtIndex(toDoList.startIndex.advancedBy(indexPath.row))
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
@@ -79,7 +77,7 @@ class ViewController: UITableViewController {
 
 extension ViewController: SecondViewControllerDelegate {
     func didSaveTodo(todo: Data) {
-        toDoList.append(todo)
+        toDoList.insert(todo)
     }
 }
 
