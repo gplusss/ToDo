@@ -38,7 +38,6 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         title = "TODO LIST"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "ADD", style: .Plain, target: self, action: #selector(addTapped))
-       
         super.viewDidLoad()
     }
 
@@ -51,6 +50,12 @@ class ViewController: UITableViewController {
         return toDoList.count
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "You have \(toDoList.count) tasks"
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! ToDoCell
         
@@ -67,11 +72,21 @@ class ViewController: UITableViewController {
 
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
-            toDoList.removeAtIndex(toDoList.startIndex.advancedBy(indexPath.row))
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete") { ( deleteAction, indexPath )  -> Void in
+            self.toDoList.removeAtIndex(self.toDoList.startIndex.advancedBy(indexPath.row))
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.reloadData()
+            
         }
+        
+        let doneAction = UITableViewRowAction(style: .Normal, title: "Done") { ( doneAction, indexPath ) -> Void in
+            
+        }
+        deleteAction.backgroundColor = UIColor.redColor()
+        doneAction.backgroundColor = UIColor.greenColor()
+        
+        return [deleteAction, doneAction]
     }
 }
 
